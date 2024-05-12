@@ -23,31 +23,32 @@ from GestureRecognitionSystem import *
 import mediapipe as mp
 from sklearn.neighbors import KNeighborsClassifier
 
-cap = InitializeCamera()
-val = ModeValidate(
-    files_name= ['Datasets\DataBase_(5-10)_Guilherme.json',
-                'Datasets\DataBase_(5-10)_Hiago.json',
-                'Datasets\DataBase_(5-10)_Lucas.json',
-                'Datasets\DataBase_(5-10)_Mateus.json',
-                'Datasets\DataBase_(5-10)_Thayron.json',
-                'Datasets\DataBase_(5-10)_Werikson_1.json',
-                'Datasets\DataBase_(5-10)_Werikson_2.json',
-                'Datasets\DataBase_(5-10)_Werikson_3.json',
-                'Datasets\DataBase_(5-10)_Werikson_4.json',
-                'Datasets\DataBase_(5-10)_Werikson_5.json',
-                'Datasets\DataBase_(5-10)_Werikson_6.json',
-                'Datasets\DataBase_(5-10)_Werikson_7.json',
-                'Datasets\DataBase_(5-10)_Werikson_8.json',
-                'Datasets\DataBase_(5-10)_Werikson_9.json',
-                'Datasets\DataBase_(5-10)_Werikson_10.json'],
-    name_val=f"val99"
-    )        
+
+files_name= ['Datasets\DataBase_(5-10)_Guilherme.json',
+            'Datasets\DataBase_(5-10)_Hiago.json',
+            'Datasets\DataBase_(5-10)_Lucas.json',
+            'Datasets\DataBase_(5-10)_Mateus.json',
+            'Datasets\DataBase_(5-10)_Thayron.json',
+            'Datasets\DataBase_(5-10)_Werikson_1.json',
+            'Datasets\DataBase_(5-10)_Werikson_2.json',
+            'Datasets\DataBase_(5-10)_Werikson_3.json',
+            'Datasets\DataBase_(5-10)_Werikson_4.json',
+            'Datasets\DataBase_(5-10)_Werikson_5.json',
+            'Datasets\DataBase_(5-10)_Werikson_6.json',
+            'Datasets\DataBase_(5-10)_Werikson_7.json',
+            'Datasets\DataBase_(5-10)_Werikson_8.json',
+            'Datasets\DataBase_(5-10)_Werikson_9.json',
+            'Datasets\DataBase_(5-10)_Werikson_10.json'
+            ]
+database={'F': [], 'I': [], 'L': [], 'P': [], 'T': []},
+name_val=f"val99"
+
+mode = ModeRealTime(files_name, database)
 
 if __name__ == "__main__":
     grs = GestureRecognitionSystem(
-        mode='V',
-        cap=cap,
-        operation=val,
+        config=InitializeConfig(),
+        operation=mode,
         tracking_processor=YoloProcessor('yolov8n-pose.pt'), 
         file_handler=FileHandler(),
         data_processor=DataProcessor(), 
@@ -55,7 +56,7 @@ if __name__ == "__main__":
         gesture_analyzer=GestureAnalyzer(),
         classifier=KNN(
             KNeighborsClassifier(
-                n_neighbors=k, 
+                n_neighbors=mode.k, 
                 algorithm='auto', 
                 weights='uniform'
                 )

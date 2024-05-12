@@ -23,12 +23,14 @@ import cv2
 import numpy as np
 import os
 
-class InitializeCamera:
-    def __init__(self, id:int=0, fps:int=5) -> None:
+class InitializeConfig:
+    def __init__(self, id:int=0, fps:int=5, dist:float=0.025, length:int=15) -> None:
         self.cap = cv2.VideoCapture(id)
         self.fps = fps
+        self.dist = dist
+        self.length = length
 
-class ModeCreate:
+class ModeDataset:
     def __inti__(self, database:dict[str, list], file_name_build:str, max_num_gest:int=50, dist:float=0.025, length:int=15) -> None:
         self.mode = 'B'
         self.database = database
@@ -38,9 +40,10 @@ class ModeCreate:
         self.length = length
 
 class ModeValidate:
-    def __init__(self, files_name:list[str], name_val:str, proportion:float=0.7, n_class:int=5, n_sample_class:int=10) -> None:
+    def __init__(self, files_name:list[str], database: dict[str, list], name_val:str, proportion:float=0.7, n_class:int=5, n_sample_class:int=10) -> None:
         self.mode = 'V'
         self.files_name = files_name
+        self.database = database
         self.proportion = proportion
         self.k = int(np.round(np.sqrt(int(len(self.files_name) * self.proportion * n_class * n_sample_class))))
         self.file_name_val = self.rename(n_class, n_sample_class, name_val)
@@ -53,29 +56,34 @@ class ModeValidate:
         return f"Results\C{c}_S{s}_p{ma_p}{me_p}_k{self.k}_{name_val}"
 
 class ModeRealTime:
-    def __init__(self) -> None:
+    def __init__(self, files_name:list[str], database: dict[str, list], proportion:float=0.7, n_class:int=5, n_sample_class:int=10) -> None:
         self.mode = 'RT'
+        self.files_name = files_name
+        self.database = database
+        self.proportion = proportion
+        self.k = int(np.round(np.sqrt(int(len(self.files_name) * self.proportion * n_class * n_sample_class))))
 
 class GestureRecognitionSystem:
     def __init__(self,
-                mode:str,
-                cap: InitializeCamera,
-                operation: ModeCreate | ModeValidate | ModeRealTime,
+                config: InitializeConfig,
+                operation: ModeDataset | ModeValidate | ModeRealTime,
                 tracking_processor, 
-                file_handler, 
-                data_processor, 
-                time_functions, 
-                gesture_analyzer,
+                file_handler: FileHandler, 
+                data_processor: DataProcessor, 
+                time_functions: TimeFunctions, 
+                gesture_analyzer: GestureAnalyzer,
                 classifier,
                 feature
                 ):
         
         # Operation mode
-        self.mode = mode # "Build", "Validate" or "Real_Time"
+        self.mode = operation.mode # "Build", "Validate" or "Real_Time"
 
         # Initializing the camera
-        self.cap = cap.cap
-        self.fps = cap.fps
+        self.cap = config.cap
+        self.fps = config.fps
+        self.dist = config.dist
+        self.length = config.length
         
         if self.mode == 'B':
             self.database = operation.database
@@ -85,9 +93,15 @@ class GestureRecognitionSystem:
             self.length = operation.length
             print(f"OK")
         elif self.mode == 'V':
+            self.database = operation.database
             self.proportion = operation.proportion
             self.files_name = operation.files_name
             self.file_name_val = operation.file_name_val
+            print(f"OK")
+        elif self.mode == 'RT':
+            self.database = operation.database
+            self.proportion = operation.proportion
+            self.files_name = operation.files_name
             print(f"OK")
         else:
             print(f"Error in Mode")
@@ -123,7 +137,7 @@ class GestureRecognitionSystem:
         The function `read_image` reads an image from a camera capture device and returns a success flag
         along with the captured frame.
         """
-        success, self.frame_captured = self.cap_RS.read()
+        success, self.frame_captured = self.cap.read()
         if not success: 
             print(f"Image capture error.")
         return success
@@ -254,7 +268,7 @@ class GestureRecognitionSystem:
         # Classifies the action performed
         self.y_predict.append(self.classifier.my_predict(self.sample['data_reduce_dim']))
         self.time_classifier.append(self.time_functions.toc(self.t_classifier))
-        print(f"The gesture performed belongs to class {self.y_predict[-1]} and took {self.time_classifier[-1]} to be classified. The total time taken for the action was {self.time_classifier[-1] + self.sample['time_gest']}. The action taken belongs to the class: ")
+        print(f"The gesture performed belongs to class {self.y_predict[-1]} and took {self.time_classifier[-1]:.3%} to be classified.")
         
         # Resets sample data variables to default values
         self.hand_history, _, self.wrists_history, self.sample = self.data_processor.initialize_data(self.dist, self.length)
@@ -285,7 +299,11 @@ class GestureRecognitionSystem:
                 t_frame = self.time_functions.tic()
                 
                 # Stop condition
-                if (cv2.waitKey(10) & 0xFF == ord("q")) or ((self.num_gest == self.max_num_gest) and (self.mode == "B")): break
+                if (cv2.waitKey(10) & 0xFF == ord("q")): break
+                
+                if (self.mode == "B"):
+                    if (self.num_gest == self.max_num_gest):
+                        break
                 
                 if (self.stage == 0 or self.stage == 1) and (self.mode == 'B' or self.mode == 'RT'):
                     if not self.read_image(): 
@@ -308,7 +326,7 @@ class GestureRecognitionSystem:
                 elif self.stage == 4 and self.mode == 'RT':
                     self.classify_gestures()
                     self.stage = 0
-        self.cap_RS.release()
+        self.cap.release()
         cv2.destroyAllWindows()
 
 
