@@ -1,24 +1,6 @@
-"""
-Research Line: Classification of gestures for vehicle control in inspection routines
-Author: Wérikson Alves
-Initial Date: 25/04/2024  => Final Date: /07/2024
-
-...............................................................................................
-Description
-    Operation mode:
-        Build:     Creates a new database and saves it in json format
-        Recognize: Load the database, create the classifier and classify the actions
-
-    Operation stage:
-        0 - Processes the image and analyzes the operator's hand
-        1 - Processes the image and analyzes the operator's body
-        2 - Reduces the dimensionality of the data
-        3 - Updates and save the database
-        4 - Performs classification from kMeans
-...............................................................................................
-""" 
 from Classes import *
 from typing import Union
+
 import cv2
 import numpy as np
 import os
@@ -31,7 +13,7 @@ class InitializeConfig:
         self.length = length
 
 class ModeDataset:
-    def __inti__(self, database:dict[str, list], file_name_build:str, max_num_gest:int=50, dist:float=0.025, length:int=15) -> None:
+    def __init__(self, database:dict[str, list], file_name_build:str, max_num_gest:int=50, dist:float=0.025, length:int=15) -> None:
         self.mode = 'B'
         self.database = database
         self.file_name_build = file_name_build
@@ -67,13 +49,13 @@ class GestureRecognitionSystem:
     def __init__(self,
                 config: InitializeConfig,
                 operation: Union[ModeDataset, ModeValidate, ModeRealTime],
-                tracking_processor, 
                 file_handler: FileHandler, 
                 data_processor: DataProcessor, 
                 time_functions: TimeFunctions, 
                 gesture_analyzer: GestureAnalyzer,
-                classifier,
-                feature
+                tracking_processor,
+                feature,
+                classifier=None
                 ):
         
         # Operation mode

@@ -23,7 +23,8 @@ from GestureRecognitionSystem import *
 import mediapipe as mp
 from sklearn.neighbors import KNeighborsClassifier
 
-
+database = {'F': [], 'I': [], 'L': [], 'P': [], 'T': []}
+file_name_build = f"Datasets\DataBase_(5-10)_Werikson_11.json"
 files_name= ['Datasets\DataBase_(5-10)_Guilherme.json',
             'Datasets\DataBase_(5-10)_Hiago.json',
             'Datasets\DataBase_(5-10)_Lucas.json',
@@ -40,27 +41,22 @@ files_name= ['Datasets\DataBase_(5-10)_Guilherme.json',
             'Datasets\DataBase_(5-10)_Werikson_9.json',
             'Datasets\DataBase_(5-10)_Werikson_10.json'
             ]
-database = {'F': [], 'I': [], 'L': [], 'P': [], 'T': []}
 name_val=f"val99"
 
-# mode = ModeRealTime(files_name, database)
-mode = ModeValidate(files_name, database, name_val)
+
+# mode = ModeDataset(database,file_name_build)
+# mode = ModeValidate(files_name, database, name_val)
+mode = ModeRealTime(files_name, database)
+
 if __name__ == "__main__":
     grs = GestureRecognitionSystem(
         config=InitializeConfig(),
         operation=mode,
-        tracking_processor=YoloProcessor('yolov8n-pose.pt'), 
         file_handler=FileHandler(),
         data_processor=DataProcessor(), 
         time_functions=TimeFunctions(), 
         gesture_analyzer=GestureAnalyzer(),
-        classifier=KNN(
-            KNeighborsClassifier(
-                n_neighbors=mode.k, 
-                algorithm='auto', 
-                weights='uniform'
-                )
-            ),
+        tracking_processor=YoloProcessor('yolov8n-pose.pt'), 
         feature=HolisticProcessor(
             mp.solutions.hands.Hands(
                 static_image_mode=False, 
@@ -77,6 +73,13 @@ if __name__ == "__main__":
                 smooth_segmentation=True, 
                 min_detection_confidence=0.75, 
                 min_tracking_confidence=0.75
+                )
+            ),
+        classifier=KNN(
+            KNeighborsClassifier(
+                n_neighbors=mode.k, 
+                algorithm='auto', 
+                weights='uniform'
                 )
             )
         )
