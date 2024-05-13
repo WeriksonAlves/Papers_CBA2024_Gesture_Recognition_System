@@ -69,7 +69,7 @@ The gesture classification system can be used to recognize and classify gestures
      files_name= ["path\name_file1.json", "path\name_file2.json", ...]
      name_val=f"val99"
 
-     # Example usage in Batch mode
+     # Example usage in Dataset mode
      dataset_mode = ModeFactory.create_mode('dataset', database=database, file_name_build=file_name_build)
 
      # Example usage in Real-Time mode
