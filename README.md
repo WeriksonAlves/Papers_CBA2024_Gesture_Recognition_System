@@ -120,3 +120,9 @@ The gesture classification system can be used to recognize and classify gestures
    - Ensure that the necessary libraries and dependencies are installed before running the system.
 
 By following these instructions and examples, you can effectively use the gesture classification system to recognize and classify gestures in your applications. Adjust the configurations and parameters as needed to suit your specific requirements and use cases.
+
+## Examples
+
+As an example of how to use the classification system, you can use the dataset available in the "Dataset" folder for Real-Time mode. To do this, run the main.py code. The gestures included in the database are shown in the figure below.
+
+Please note that the main.py script must be run without any changes.
