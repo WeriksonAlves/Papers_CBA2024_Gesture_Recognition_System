@@ -18,7 +18,7 @@ Description
 ...............................................................................................
 """ 
 
-from Classes import *
+from modules import *
 from sklearn.neighbors import KNeighborsClassifier
 import mediapipe as mp
 import os
