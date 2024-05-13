@@ -1,8 +1,4 @@
 """
-Research Line: Classification of gestures for vehicle control in inspection routines
-Author: Wérikson Alves
-Initial Date: 25/04/2024  => Final Date: /07/2024
-
 ...............................................................................................
 Description
     Operation mode:

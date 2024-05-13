@@ -7,18 +7,12 @@ from ..gesture.DataProcessor import DataProcessor
 from ..gesture.GestureAnalyzer import GestureAnalyzer
 from ..gesture.FeatureExtractor import FeatureExtractor
 
+# This class likely represents a system designed for recognizing gestures.
 class GestureRecognitionSystem:
-    def __init__(self, 
-                    config: InitializeConfig, 
-                    operation: Union[ModeDataset, ModeValidate, ModeRealTime], 
-                    file_handler: FileHandler, 
-                    current_folder: str,
-                    data_processor: DataProcessor, 
-                    time_functions: TimeFunctions, 
-                    gesture_analyzer: GestureAnalyzer, 
-                    tracking_processor, 
-                    feature, 
-                    classifier=None):
+    def __init__(self, config: InitializeConfig, operation: Union[ModeDataset, ModeValidate, ModeRealTime], 
+                 file_handler: FileHandler, current_folder: str, data_processor: DataProcessor, 
+                 time_functions: TimeFunctions, gesture_analyzer: GestureAnalyzer, tracking_processor, 
+                 feature, classifier=None):
         self._initialize_camera(config)
         self._initialize_operation(operation)
 
@@ -35,12 +29,20 @@ class GestureRecognitionSystem:
         self._initialize_storage_variables()
 
     def _initialize_camera(self, config: InitializeConfig) -> None:
+        """
+        The function `_initialize_camera` initializes camera settings based on the provided
+        configuration.
+        """
         self.cap = config.cap
         self.fps = config.fps
         self.dist = config.dist
         self.length = config.length
 
     def _initialize_operation(self, operation: Union[ModeDataset, ModeValidate, ModeRealTime]) -> None:
+        """
+        The function `_initialize_operation` initializes attributes based on the mode specified in the
+        input operation.
+        """
         self.mode = operation.mode
         if self.mode == 'B':
             self.database = operation.database
@@ -61,6 +63,10 @@ class GestureRecognitionSystem:
             raise ValueError("Invalid mode")
 
     def _initialize_simulation_variables(self) -> None:
+        """
+        The function `_initialize_simulation_variables` initializes various simulation variables to
+        default values.
+        """
         self.stage = 0
         self.num_gest = 0
         self.dist_virtual_point = 1
@@ -74,9 +80,32 @@ class GestureRecognitionSystem:
         self.time_classifier = []
 
     def _initialize_storage_variables(self) -> None:
+        """
+        The function `_initialize_storage_variables` initializes storage variables using data processed
+        by `data_processor`.
+        """
         self.hand_history, _, self.wrists_history, self.sample = self.data_processor.initialize_data(self.dist, self.length)
 
     def run(self):
+        """
+        Run the gesture recognition system based on the specified mode.
+
+        - If the mode is 'B' (Batch), initialize the database and set the loop flag to True.
+        - If the mode is 'RT' (Real-Time), load and fit the classifier, and set the loop flag to True.
+        - If the mode is 'V' (Validation), validate the classifier and set the loop flag to False.
+        - If the mode is invalid, print a message and set the loop flag to False.
+
+        During the loop:
+        - Measure the time for each frame.
+        - Check for user input to quit the loop (pressing 'q').
+        - If the mode is 'B', break the loop if the maximum number of gestures is reached.
+        - Process each stage of the gesture recognition system.
+
+        After the loop, release the capture and close all OpenCV windows.
+
+        Returns:
+            None
+        """
         if self.mode == 'B':
             self._initialize_database()
             self.loop = True
@@ -108,13 +137,24 @@ class GestureRecognitionSystem:
         cv2.destroyAllWindows()
 
     def _initialize_database(self):
+        """
+        This method initializes the target names and ground truth labels (y_val) by calling the
+        initialize_database method of the file_handler object.
+        """
         self.target_names, self.y_val = self.file_handler.initialize_database(self.database)
 
     def _load_and_fit_classifier(self):
+        """
+        This method loads the training data, fits the classifier with the training data, and performs
+        model training.
+        """
         x_train, y_train, _, _ = self.file_handler.load_database(self.current_folder, self.files_name, self.proportion)
         self.classifier.fit(x_train, y_train)
 
     def _validate_classifier(self):
+        """
+        This method validates the classifier with validation data and saves the validation results.
+        """
         x_train, y_train, x_val, self.y_val = self.file_handler.load_database(self.current_folder, self.files_name, self.proportion)
         self.classifier.fit(x_train, y_train)
         self.y_predict, self.time_classifier = self.classifier.validate(x_val)
@@ -122,6 +162,11 @@ class GestureRecognitionSystem:
         self.file_handler.save_results(self.y_val, self.y_predict, self.time_classifier, self.target_names, os.path.join(self.current_folder, self.file_name_val))
 
     def _process_stage(self) -> None:
+        """
+        The `_process_stage` function handles different stages and modes of processing in the system.        
+        Returns:
+        - If conditions are met, the function may return `None` or continue execution without returning anything.
+        """
         if self.stage in [0, 1] and self.mode in ['B', 'RT']:
             if not self.read_image():
                 return
