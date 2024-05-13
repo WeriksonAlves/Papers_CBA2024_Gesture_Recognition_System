@@ -64,18 +64,19 @@ The gesture classification system can be used to recognize and classify gestures
    - Below are some example code snippets demonstrating how to use the gesture classification system:
 
      ```python
+     database = {'F': [], 'I': [], 'L': [], 'P': [], 'T': []}
+     file_name_build = f"path\name_file.json"
+     files_name= ["path\name_file1.json", "path\name_file2.json", ...]
+     name_val=f"val99"
+
      # Example usage in Batch mode
      dataset_mode = ModeFactory.create_mode('dataset', database=database, file_name_build=file_name_build)
-     system.run()
 
      # Example usage in Real-Time mode
      real_time_mode = ModeFactory.create_mode('real_time', files_name=files_name, database=database)
-     system.run()
 
      # Example usage in Validation mode
      validate_mode = ModeFactory.create_mode('validate', files_name=files_name, database=database, name_val=name_val)
-     system.run()
-
      ```
 
      ```python
