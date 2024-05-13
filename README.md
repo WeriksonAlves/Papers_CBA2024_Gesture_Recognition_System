@@ -125,4 +125,10 @@ By following these instructions and examples, you can effectively use the gestur
 
 As an example of how to use the classification system, you can use the dataset available in the "Dataset" folder for Real-Time mode. To do this, run the main.py code. The gestures included in the database are shown in the figure below.
 
+![alt text](Paper/Images/gesture_class.png)
+
 Please note that the main.py script must be run without any changes.
+
+## Contact Information
+
+For more information, any questions or suggestions for improvement, please get in touch.
