@@ -109,13 +109,8 @@ The gesture classification system can be used to recognize and classify gestures
                     min_tracking_confidence=0.75
                     )
                 ),
-            classifier=KNN(
-                KNeighborsClassifier(
-                    n_neighbors=mode.k, 
-                    algorithm='auto', 
-                    weights='uniform'
-                    )
-                )
+            classifier=KNN(KNeighborsClassifier( n_neighbors=mode.k, algorithm='auto', weights='uniform'))
+            # or classifier=None
             )
      grs.run()
      ```
