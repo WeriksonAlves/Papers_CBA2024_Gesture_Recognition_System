@@ -20,22 +20,22 @@ import mediapipe as mp
 import os
 
 database = {'F': [], 'I': [], 'L': [], 'P': [], 'T': []}
-file_name_build = f"Datasets\DataBase_(5-10)_Werikson_11.json"
-files_name= ['Datasets\DataBase_(5-10)_Guilherme.json',
-            'Datasets\DataBase_(5-10)_Hiago.json',
-            'Datasets\DataBase_(5-10)_Lucas.json',
-            'Datasets\DataBase_(5-10)_Mateus.json',
-            'Datasets\DataBase_(5-10)_Thayron.json',
-            'Datasets\DataBase_(5-10)_Werikson_1.json',
-            'Datasets\DataBase_(5-10)_Werikson_2.json',
-            'Datasets\DataBase_(5-10)_Werikson_3.json',
-            'Datasets\DataBase_(5-10)_Werikson_4.json',
-            'Datasets\DataBase_(5-10)_Werikson_5.json',
-            'Datasets\DataBase_(5-10)_Werikson_6.json',
-            'Datasets\DataBase_(5-10)_Werikson_7.json',
-            'Datasets\DataBase_(5-10)_Werikson_8.json',
-            'Datasets\DataBase_(5-10)_Werikson_9.json',
-            'Datasets\DataBase_(5-10)_Werikson_10.json'
+file_name_build = f"Datasets\DataBase_(5-10)_16.json"
+files_name= ['Datasets\DataBase_(5-10)_G.json',
+            'Datasets\DataBase_(5-10)_H.json',
+            'Datasets\DataBase_(5-10)_L.json',
+            'Datasets\DataBase_(5-10)_M.json',
+            'Datasets\DataBase_(5-10)_T.json',
+            'Datasets\DataBase_(5-10)_1.json',
+            'Datasets\DataBase_(5-10)_2.json',
+            'Datasets\DataBase_(5-10)_3.json',
+            'Datasets\DataBase_(5-10)_4.json',
+            'Datasets\DataBase_(5-10)_5.json',
+            'Datasets\DataBase_(5-10)_6.json',
+            'Datasets\DataBase_(5-10)_7.json',
+            'Datasets\DataBase_(5-10)_8.json',
+            'Datasets\DataBase_(5-10)_9.json',
+            'Datasets\DataBase_(5-10)_10.json'
             ]
 name_val=f"val99"
 
