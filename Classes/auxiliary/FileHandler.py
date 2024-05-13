@@ -113,4 +113,4 @@ class FileHandler(InterfaceFile):
         disp_abs.plot()
         plt.savefig(file_path_val+'_abs.jpg')
 
-        print(classification_report(y_true, y_predict, target_names=target_names))
+        print(classification_report(y_true, y_predict, target_names=target_names, zero_division=0))

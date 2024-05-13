@@ -40,11 +40,11 @@ files_name= ['Datasets\DataBase_(5-10)_Guilherme.json',
             'Datasets\DataBase_(5-10)_Werikson_9.json',
             'Datasets\DataBase_(5-10)_Werikson_10.json'
             ]
-database={'F': [], 'I': [], 'L': [], 'P': [], 'T': []},
+database = {'F': [], 'I': [], 'L': [], 'P': [], 'T': []}
 name_val=f"val99"
 
-mode = ModeRealTime(files_name, database)
-
+# mode = ModeRealTime(files_name, database)
+mode = ModeValidate(files_name, database, name_val)
 if __name__ == "__main__":
     grs = GestureRecognitionSystem(
         config=InitializeConfig(),

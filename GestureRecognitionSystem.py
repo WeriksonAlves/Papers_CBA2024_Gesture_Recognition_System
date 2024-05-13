@@ -18,7 +18,7 @@ Description
 ...............................................................................................
 """ 
 from Classes import *
-
+from typing import Union
 import cv2
 import numpy as np
 import os
@@ -66,7 +66,7 @@ class ModeRealTime:
 class GestureRecognitionSystem:
     def __init__(self,
                 config: InitializeConfig,
-                operation: ModeDataset | ModeValidate | ModeRealTime,
+                operation: Union[ModeDataset, ModeValidate, ModeRealTime],
                 tracking_processor, 
                 file_handler: FileHandler, 
                 data_processor: DataProcessor, 
