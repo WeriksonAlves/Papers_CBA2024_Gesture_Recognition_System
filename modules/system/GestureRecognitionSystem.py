@@ -44,7 +44,7 @@ class GestureRecognitionSystem:
         input operation.
         """
         self.mode = operation.mode
-        if self.mode == 'B':
+        if self.mode == 'D':
             self.database = operation.database
             self.file_name_build = operation.file_name_build
             self.max_num_gest = operation.max_num_gest
@@ -90,7 +90,7 @@ class GestureRecognitionSystem:
         """
         Run the gesture recognition system based on the specified mode.
 
-        - If the mode is 'B' (Batch), initialize the database and set the loop flag to True.
+        - If the mode is 'D' (Batch), initialize the database and set the loop flag to True.
         - If the mode is 'RT' (Real-Time), load and fit the classifier, and set the loop flag to True.
         - If the mode is 'V' (Validation), validate the classifier and set the loop flag to False.
         - If the mode is invalid, print a message and set the loop flag to False.
@@ -98,7 +98,7 @@ class GestureRecognitionSystem:
         During the loop:
         - Measure the time for each frame.
         - Check for user input to quit the loop (pressing 'q').
-        - If the mode is 'B', break the loop if the maximum number of gestures is reached.
+        - If the mode is 'D', break the loop if the maximum number of gestures is reached.
         - Process each stage of the gesture recognition system.
 
         After the loop, release the capture and close all OpenCV windows.
@@ -106,7 +106,7 @@ class GestureRecognitionSystem:
         Returns:
             None
         """
-        if self.mode == 'B':
+        if self.mode == 'D':
             self._initialize_database()
             self.loop = True
         elif self.mode == 'RT':
@@ -167,19 +167,19 @@ class GestureRecognitionSystem:
         Returns:
         - If conditions are met, the function may return `None` or continue execution without returning anything.
         """
-        if self.stage in [0, 1] and self.mode in ['B', 'RT']:
+        if self.stage in [0, 1] and self.mode in ['D', 'RT']:
             if not self.read_image():
                 return
             if not self.image_processing():
                 return
             self.extract_features()
-        elif self.stage == 2 and self.mode in ['B', 'RT']:
+        elif self.stage == 2 and self.mode in ['D', 'RT']:
             self.process_reduction()
-            if self.mode == "B":
+            if self.mode == 'D':
                 self.stage = 3
-            elif self.mode == "RT":
+            elif self.mode == 'RT':
                 self.stage = 4
-        elif self.stage == 3 and self.mode == 'B':
+        elif self.stage == 3 and self.mode == 'D':
             if self.update_database():
                 self.loop = False
             self.stage = 0
@@ -219,7 +219,7 @@ class GestureRecognitionSystem:
             
             # Shows the skeleton formed on the body, and indicates which gesture is being 
             # performed at the moment.
-            if self.mode == 'B':
+            if self.mode == 'D':
                 cv2.putText(frame_results, f"S{self.stage} N{self.num_gest+1}: {self.y_val[self.num_gest]} D{self.dist_virtual_point:.3f}" , (25,25), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
             elif self.mode == 'RT':
                 cv2.putText(frame_results, f"S{self.stage} D{self.dist_virtual_point:.3f}" , (25,25), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)

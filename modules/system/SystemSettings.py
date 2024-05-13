@@ -30,7 +30,7 @@ class ModeFactory:
 class ModeDataset:
     def __init__(self, database: dict[str, list], file_name_build: str, max_num_gest: int = 50,
                     dist: float = 0.025, length: int = 15) -> None:
-        self.mode = 'B'
+        self.mode = 'D'
         self.database = database
         self.file_name_build = file_name_build
         self.max_num_gest = max_num_gest
