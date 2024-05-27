@@ -123,11 +123,13 @@ By following these instructions and examples, you can effectively use the gestur
 
 ## Examples
 
-As an example of how to use the classification system, you can use the dataset available in the "Dataset" folder for Real-Time mode. To do this, run the main.py code. The gestures included in the database are shown in the figure below.
+As an example of how to use the classification system, you can use the dataset available in the "Dataset" folder for Real-Time mode. To do this, run the main.py code. To initiate the gesture, bring the fingertips of the tracked hand together until their distance is less than 0.025 (this value is displayed in the real-time window). The gestures included in the database are shown in the figure below.
 
 ![alt text](Paper/Images/gesture_class.png)
 
 Please note that the main.py script must be run without any changes.
+
+*NOTE*: The preview window also indicates the stages of the action (S0 for awaiting trigger and S1 for storing gesture information) and shows the number of actions performed so far.
 
 ## Contact Information
 
