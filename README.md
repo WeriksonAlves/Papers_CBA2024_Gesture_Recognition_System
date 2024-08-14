@@ -3,6 +3,7 @@
 *Paper submitted to the Congresso Brasileiro de Automática (CBA) in 2024*
 
 **Abstract**
+
 In many applications, gesture recognition systems involve several stages, such as identifying and tracking people, collecting data, extracting features and processing them using classification algorithms. In this paper, we present a gesture recognition system adapted for robot guidance applications, using the K-Nearest Neighbors (KNN) algorithm in conjunction with an Intel RealSense D435 depth camera. The effectiveness of this method is evaluated by analyzing the confusion matrix, revealing an accuracy rate of 94\% in matching actions, highlighting the system's proficiency in applications involving robot control, especially in inspection tasks. In view of future studies, considering the relevance of inspection through UAV teleoperation, this study seeks to implement a gesture recognition system for the management of autonomous vehicles. The system will assist operators in inspection and validation tasks by employing a simplified classification technique, improving UAV teleoperation.
 
 ## Overview of Gesture Classification System
